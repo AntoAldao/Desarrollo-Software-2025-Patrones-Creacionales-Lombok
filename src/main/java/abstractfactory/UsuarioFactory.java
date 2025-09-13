@@ -8,6 +8,12 @@ public class UsuarioFactory implements AbstractFactory {
 
     @Override
     public MetodoEnvio crearEnvio() {
-        return new EnvioNormal();
+        return EnvioNormal.builder()
+                .costoBase(1200.0)
+                .costoPorKg(200.0)
+                .costoPorKm(5.0)
+                .velocidadKmPorDia(400)
+                .diasMinimos(2)
+                .build();
     }
 }
