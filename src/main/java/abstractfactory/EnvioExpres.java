@@ -1,6 +1,16 @@
 package main.java.abstractfactory;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class EnvioExpres implements MetodoEnvio{
+    private double costoBase;
+    private double costoPorKg;
+    private double costoPorKm;
+    private int velocidadKmPorDia;
+    private int diasMinimos;
 
     @Override
     public String tipo() {
@@ -8,15 +18,13 @@ public class EnvioExpres implements MetodoEnvio{
     }
 
     @Override
-    public int diasEstimados(int distanciakm) {
-        // Regla simpls: ~800 kn/día, mínimo 1 día
-        int dias = (int) Math.ceil(distanciakm / 800.0);
-        return Math.max(dias, 1);
+    public int diasEstimados(int distanciaKm) {
+        int dias = (int) Math.ceil(distanciaKm / (double) velocidadKmPorDia);
+        return Math.max(dias, diasMinimos);
     }
 
     @Override
-    public double costo(double pesokg, int distanciakm) {
-        //Mas caro que el normal
-        return 2000.0 + (pesokg * 300.0) + (distanciakm * 8.0);
+    public double costo(double pesoKg, int distanciakm) {
+        return costoBase + (pesoKg * costoPorKg) + (distanciakm * costoPorKm);
     }
 }
